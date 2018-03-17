@@ -24,6 +24,10 @@ import (
 
 var seedCount int64 = 100000
 
+func SetSeed(seed int64) {
+	seedCount = seed
+}
+
 type distribution struct {
 	generator *rand.Rand
 }
