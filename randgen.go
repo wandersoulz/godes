@@ -22,7 +22,7 @@ import (
 	//"fmt"
 )
 
-var seedCount int64 = 100000
+var seedCount int64
 
 func SetSeed(seed int64) {
 	seedCount = seed
