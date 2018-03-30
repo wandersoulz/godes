@@ -22,7 +22,11 @@ import (
 	//"fmt"
 )
 
-var seedCount int64
+var seedCount int64 = 100000
+
+func GetSeed() int64 {
+	return seedCount
+}
 
 func SetSeed(seed int64) {
 	seedCount = seed
@@ -121,4 +125,32 @@ func (bd *TriangularDistr) Get(a float64, b float64, c float64) float64 {
 	} else {
 		return b - math.Sqrt((1.-u)*(b-a)*(b-c))
 	}
+}
+
+type FunctionalDistr struct {
+	generator *UniformDistr
+}
+
+func NewFunctionalDistr(repetition bool) *FunctionalDistr {
+	return &FunctionalDistr{NewUniformDistr(repetition)}
+}
+
+func sumProbs(arr []float64) float64 {
+	sum := 0.0
+	for i := 0; i < len(arr); i++ {
+		sum += arr[i]
+	}
+	return sum
+}
+
+func (fd *FunctionalDistr) Get(values []float64, min float64, max float64) int {
+	sample := fd.generator.Get(min, max)
+	sampleIndex := -1
+	for index := range values {
+		if sample <= sumProbs(values[0:1+index]) {
+			sampleIndex = index
+			break
+		}
+	}
+	return sampleIndex
 }
